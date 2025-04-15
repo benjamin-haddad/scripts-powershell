@@ -1,7 +1,7 @@
 ﻿Import-Module ActiveDirectory
 Import-Module 'Microsoft.PowerShell.Security'
 
-$users = Import-Csv -Delimiter ";" -Path "C:\docs\scripts\import.csv"
+$users = Import-Csv -Delimiter ";" -Path "C:\Users\Administrateur\Documents\docs\scripts\import.csv"
 
 #********************Création des OU********************************
 
