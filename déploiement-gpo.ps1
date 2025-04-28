@@ -1,37 +1,32 @@
-# Chargement du module Active Directory
+# Importer le module Active Directory si nécessaire
 Import-Module ActiveDirectory
 
-# Définir les variables
-$GPOName = "NomDeVotreGPO"  # Nom du GPO
-$GPODescription = "Description de votre GPO"  # Description du GPO
-$OUPath = "OU=NomDeVotreUnitéOrganisationnelle,DC=VotreDomaine,DC=com"  # Chemin LDAP de l'unité organisationnelle
-$SecurityGroupName = "NomDuGroupeDeSécurité"  # Nom du groupe de sécurité
+# Définir le nom de la GPO et sa description
+$GPOName = "Interdire Accès Panneau de Configuration"
+$GPODescription = "Cette GPO interdit l'accès au Panneau de configuration"
 
-# Étape 1 : Créer un nouveau GPO
-Write-Host "Création du GPO..."
-New-GPO -Name $GPOName -Description $GPODescription
-$GPO = Get-GPO -Name $GPOName
+# Créer la GPO
+$GPO = New-GPO -Name $GPOName -Comment $GPODescription
+Write-Host "GPO '$GPOName' créée avec succès."
 
-# Étape 2 : Configurer le GPO (Exemple de paramètres)
-Write-Host "Configuration des paramètres du GPO..."
-$RegistrySetting = @"
-Windows Registry Editor Version 5.00
+# Modifier les paramètres de la GPO pour interdire l'accès au panneau de configuration
+$RegistryPath = "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+$RegistryValueName = "NoControlPanel"
+$RegistryValueData = 1  # La valeur est un entier, pas une chaîne
 
-[HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Installer]
-"DisableMSI"=dword:00000001
-"@
-$RegistryFilePath = "C:\Temp\GPO_RegistrySettings.reg"
-$RegistrySetting | Out-File -FilePath $RegistryFilePath
-Import-GPOBackup -Path $RegistryFilePath -BackupGPO $GPO
+Set-GPRegistryValue -Name $GPOName -Key $RegistryPath -ValueName $RegistryValueName -Type DWord -Value $RegistryValueData
+Write-Host "Les paramètres de la GPO '$GPOName' ont été configurés."
 
-# Étape 3 : Lier le GPO à une unité organisationnelle
-Write-Host "Liaison du GPO à l'unité organisationnelle..."
-Set-GPLink -Name $GPOName -Target $OUPath -LinkEnabled Yes
+# Lier la GPO aux OU spécifiques
+$OUs = @(
+    "OU=Paris,OU=Employes,DC=m2l,DC=local",
+    "OU=Londres,OU=Employes,DC=m2l,DC=local",
+    "OU=Berlin,OU=Employes,DC=m2l,DC=local"
+)
 
-# Étape 4 : Ajouter un filtre de sécurité basé sur un groupe de sécurité
-Write-Host "Ajout du filtre de sécurité..."
-$GPOPermissions = @("Read", "Apply Group Policy")
-$Group = Get-ADGroup -Identity $SecurityGroupName
-Set-GPPermission -Name $GPOName -PermissionLevel $GPOPermissions -TargetType Group -TargetName $Group.Name
+foreach ($OU in $OUs) {
+    New-GPLink -Name $GPOName -Target $OU -Enforced No
+    Write-Host "GPO '$GPOName' liée à l'OU '$OU'."
+}
 
-Write-Host "Installation et déploiement du GPO terminés avec succès !"
+Write-Host "La configuration et les liaisons de la GPO sont terminées avec succès."
