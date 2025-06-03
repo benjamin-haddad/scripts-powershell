@@ -19,9 +19,9 @@ Write-Host "Les paramètres de la GPO '$GPOName' ont été configurés."
 
 # Lier la GPO aux OU spécifiques
 $OUs = @(
-    "OU=Paris,OU=Employes,DC=m2l,DC=fr",
-    "OU=Londres,OU=Employes,DC=m2l,DC=fr",
-    "OU=Berlin,OU=Employes,DC=m2l,DC=fr"
+    "OU=Paris,OU=Employes,DC=m2l,DC=lan",
+    "OU=Londres,OU=Employes,DC=m2l,DC=lan",
+    "OU=Berlin,OU=Employes,DC=m2l,DC=lan"
 )
 
 foreach ($OU in $OUs) {
