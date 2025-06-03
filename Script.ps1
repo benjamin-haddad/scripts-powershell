@@ -5,10 +5,10 @@ $users = Import-Csv -Delimiter ";" -Path "C:\Users\Administrateur\Documents\docs
 
 #********************Création des OU********************************
 
-New-ADOrganizationalUnit -Name "Bâtiment-A" -Path "dc=m2l,dc=lan"
-New-ADOrganizationalUnit -Name "Escrime" -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADOrganizationalUnit -Name "Badminton" -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADOrganizationalUnit -Name "Volley" -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADOrganizationalUnit -Name "Employés" -Path "dc=m2l,dc=lan"
+New-ADOrganizationalUnit -Name "Londres" -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADOrganizationalUnit -Name "Paris" -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADOrganizationalUnit -Name "Berlin" -Path "ou=Employés,dc=m2l,dc=lan"
 
 #*******Ajout de chaque utilisateur dans son OU spécifique*******
 
@@ -24,9 +24,9 @@ foreach ($user in $users){
     
 
     switch($user.office){
-        "Escrime" {$office = "OU=Escrime,OU=Bâtiment-A,dc=m2l,DC=lan"}
-        "Badminton" {$office = "OU=Badminton,OU=Bâtiment-A,dc=m2l,DC=lan"}
-        "Volley" {$office = "OU=Volley,OU=Bâtiment-A,dc=m2l,DC=lan"}
+        "Paris" {$office = "OU=Paris,OU=Employés,dc=m2l,DC=lan"}
+        "Berlin" {$office = "OU=Berlin,OU=Employés,dc=m2l,DC=lan"}
+        "Londres" {$office = "OU=Londres,OU=Employés,dc=m2l,DC=lan"}
         default {$office = $null}    
     }
     
@@ -43,40 +43,40 @@ foreach ($user in $users){
 
 # ********Création des Groupes*********
 
-New-ADGroup -Name Direction -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADGroup -Name Direction -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
 
-New-ADGroup -Name Sales -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Traders -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Secretary -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Accounting -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Financial-Consultant -GroupScope Global -GroupCategory Security -Path "ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADGroup -Name Sales -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Traders -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Secretary -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Accounting -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Financial-Consultant -GroupScope Global -GroupCategory Security -Path "ou=Employés,dc=m2l,dc=lan"
 
-#*********************Groupes sous Escrime************************
+#*********************Groupes sous Paris************************
 
-New-ADGroup -Name DirectionParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SalesParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name TradersParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SecretaryParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name AccountingParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Financial-ConsultantParis -GroupScope Global -GroupCategory Security -Path "ou=Escrime,ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADGroup -Name DirectionParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SalesParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name TradersParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SecretaryParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name AccountingParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Financial-ConsultantParis -GroupScope Global -GroupCategory Security -Path "ou=Paris,ou=Employés,dc=m2l,dc=lan"
 
-#*********************Groupes sous Badminton************************
+#*********************Groupes sous Berlin************************
 
-New-ADGroup -Name DirectionBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SalesBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name TradersBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SecretaryBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name AccountingBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Financial-ConsultantBerlin -GroupScope Global -GroupCategory Security -Path "ou=Badminton,ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADGroup -Name DirectionBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SalesBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name TradersBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SecretaryBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name AccountingBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Financial-ConsultantBerlin -GroupScope Global -GroupCategory Security -Path "ou=Berlin,ou=Employés,dc=m2l,dc=lan"
 
-#*********************Groupes sous Volley************************
+#*********************Groupes sous Londres************************
 
-New-ADGroup -Name DirectionLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SalesLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name TradersLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name SecretaryLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name AccountingLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
-New-ADGroup -Name Financial-ConsultantLondres -GroupScope Global -GroupCategory Security -Path "ou=Volley,ou=Bâtiment-A,dc=m2l,dc=lan"
+New-ADGroup -Name DirectionLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SalesLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name TradersLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name SecretaryLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name AccountingLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
+New-ADGroup -Name Financial-ConsultantLondres -GroupScope Global -GroupCategory Security -Path "ou=Londres,ou=Employés,dc=m2l,dc=lan"
 
 
 foreach ($user in $users){
@@ -91,100 +91,100 @@ foreach ($user in $users){
 
 
 
-#********Ajout des utilisateurs de Volley dans leurs groupes********************
+#********Ajout des utilisateurs de Londres dans leurs groupes********************
 
-if ($Uoffice -eq "Volley" -and $dept -eq "Direction"){
+if ($Uoffice -eq "Londres" -and $dept -eq "Direction"){
 
     Add-ADGroupMember -Identity 'DirectionLondres' -Members $login
 
 }
-elseif ($Uoffice -eq "Volley" -and $dept -eq "Traders"){
+elseif ($Uoffice -eq "Londres" -and $dept -eq "Traders"){
 
     Add-ADGroupMember -Identity 'TradersLondres' -Members $login
 
 }
-elseif ($Uoffice -eq "Volley" -and $dept -eq "Secretary"){
+elseif ($Uoffice -eq "Londres" -and $dept -eq "Secretary"){
 
     Add-ADGroupMember -Identity 'SecretaryLondres' -Members $login
 
 }
-elseif ($Uoffice -eq "Volley" -and $dept -eq "Accounting"){
+elseif ($Uoffice -eq "Londres" -and $dept -eq "Accounting"){
 
     Add-ADGroupMember -Identity 'AccountingLondres' -Members $login
 
 }
-elseif ($Uoffice -eq "Volley" -and $dept -eq "Financial-Consultant"){
+elseif ($Uoffice -eq "Londres" -and $dept -eq "Financial-Consultant"){
 
     Add-ADGroupMember -Identity 'Financial-ConsultantLondres' -Members $login
 
 }
-elseif ($Uoffice -eq "Volley" -and $dept -eq "Sales"){
+elseif ($Uoffice -eq "Londres" -and $dept -eq "Sales"){
 
     Add-ADGroupMember -Identity 'SalesLondres' -Members $login
 } 
 
 
-#********Ajout des utilisateurs de Badminton dans leurs groupes********************
+#********Ajout des utilisateurs de Berlin dans leurs groupes********************
 
-if ($Uoffice -eq "Badminton" -and $dept -eq "Direction"){
+if ($Uoffice -eq "Berlin" -and $dept -eq "Direction"){
 
     Add-ADGroupMember -Identity 'DirectionBerlin' -Members $login
 
 }
-elseif ($Uoffice -eq "Badminton" -and $dept -eq "Traders"){
+elseif ($Uoffice -eq "Berlin" -and $dept -eq "Traders"){
 
     Add-ADGroupMember -Identity 'TradersBerlin' -Members $login
 
 }
-elseif ($Uoffice -eq "Badminton" -and $dept -eq "Secretary"){
+elseif ($Uoffice -eq "Berlin" -and $dept -eq "Secretary"){
 
     Add-ADGroupMember -Identity 'SecretaryBerlin' -Members $login
 
 }
-elseif ($Uoffice -eq "Badminton" -and $dept -eq "Accounting"){
+elseif ($Uoffice -eq "Berlin" -and $dept -eq "Accounting"){
 
     Add-ADGroupMember -Identity 'AccountingBerlin' -Members $login
 
 }
-elseif ($Uoffice -eq "Badminton" -and $dept -eq "Financial-Consultant"){
+elseif ($Uoffice -eq "Berlin" -and $dept -eq "Financial-Consultant"){
 
     Add-ADGroupMember -Identity 'Financial-ConsultantBerlin' -Members $login
 
 }
-elseif ($Uoffice -eq "Badminton" -and $dept -eq "Sales"){
+elseif ($Uoffice -eq "Berlin" -and $dept -eq "Sales"){
 
     Add-ADGroupMember -Identity 'SalesBerlin' -Members $login
 } 
 
 
-#********Ajout des utilisateurs de Escrime dans leurs groupes********************
+#********Ajout des utilisateurs de Paris dans leurs groupes********************
 
-if ($Uoffice -eq "Escrime" -and $dept -eq "Direction"){
+if ($Uoffice -eq "Paris" -and $dept -eq "Direction"){
 
     Add-ADGroupMember -Identity 'DirectionParis' -Members $login
 
 }
-elseif ($Uoffice -eq "Escrime" -and $dept -eq "Traders"){
+elseif ($Uoffice -eq "Paris" -and $dept -eq "Traders"){
 
     Add-ADGroupMember -Identity 'TradersParis' -Members $login
 
 }
-elseif ($Uoffice -eq "Escrime" -and $dept -eq "Secretary"){
+elseif ($Uoffice -eq "Paris" -and $dept -eq "Secretary"){
 
     Add-ADGroupMember -Identity 'SecretaryParis' -Members $login
 
 }
-elseif ($Uoffice -eq "Escrime" -and $dept -eq "Accounting"){
+elseif ($Uoffice -eq "Paris" -and $dept -eq "Accounting"){
 
     Add-ADGroupMember -Identity 'AccountingParis' -Members $login
 
 }
-elseif ($Uoffice -eq "Escrime" -and $dept -eq "Financial-Consultant"){
+elseif ($Uoffice -eq "Paris" -and $dept -eq "Financial-Consultant"){
 
     Add-ADGroupMember -Identity 'Financial-ConsultantParis' -Members $login
 
 }
-elseif ($Uoffice -eq "Escrime" -and $dept -eq "Sales"){
+elseif ($Uoffice -eq "Paris" -and $dept -eq "Sales"){
 
     Add-ADGroupMember -Identity 'SalesParis' -Members $login
 } 
