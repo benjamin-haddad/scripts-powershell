@@ -12,7 +12,7 @@ $OU = "OU=Postes,DC=monDomaine,DC=com"
 New-GPLink -Name $GPOName -Target $OU
 
 # Définition du fond d'écran via le registre
-$RegistryPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System"
+$RegistryPath = "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System"
 $RegistryName = "Wallpaper"
 $ImagePath = "\\serveur\partage\image.jpg"
 
@@ -21,10 +21,10 @@ If (!(Test-Path $RegistryPath)) {
     New-Item -Path $RegistryPath -Force
 }
 
-New-GPPrefRegistryValue -Name $GPOName -Context User -Key $RegistryPath -ValueName $RegistryName -Type String -Value $ImagePath
 
-# Application de la valeur
-Set-ItemProperty -Path $RegistryPath -Name $RegistryName -Value $ImagePath
+# Définition de la préférence de registre via la GPO
+Set-GPPrefRegistryValue -Name $GPOName -Context User -Key $RegistryPath -ValueName $RegistryName -Type String -Value $ImagePath -Action Create
+
 
 # Forcer l’application de la GPO
 gpupdate /force
